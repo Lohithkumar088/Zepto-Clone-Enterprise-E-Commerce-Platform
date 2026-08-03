@@ -55,6 +55,9 @@ public class Vendor {
     @Builder.Default
     private VendorStatus status = VendorStatus.PENDING;
 
+    @Column(length = 500)
+    private String rejectionReason;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
