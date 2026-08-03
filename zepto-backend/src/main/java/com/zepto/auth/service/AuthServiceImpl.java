@@ -33,8 +33,8 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.ROLE_USER)
-                .role(UserRole.ROLE_ADMIN)
+               .role(UserRole.USER)
+                // .role(UserRole.ROLE_ADMIN)
                 .enabled(true)
                 .build();
 
@@ -68,11 +68,6 @@ public class AuthServiceImpl implements AuthService {
         boolean matches = passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword());
-
-        if (!matches) {
-            throw new InvalidCredentialsException(
-                    "Invalid email or password");
-        }
 
         if (!matches) {
             throw new InvalidCredentialsException(
