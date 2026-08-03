@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.zepto.address.entity.Address;
 import com.zepto.cart.entity.Cart;
+import com.zepto.vendor.entity.Vendor;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -61,20 +62,19 @@ public class User {
     @Builder.Default
     private Boolean enabled = true;
 
-    @OneToOne(mappedBy = "user",
+    @OneToOne(
+            mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true
+    )
     private Cart cart;
 
-    // @OneToMany(mappedBy = "user",
-    //         cascade = CascadeType.ALL)
-    // @Builder.Default
-    // private List<Order> orders = new ArrayList<>();
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Vendor vendor;
 
     @OneToMany(
             mappedBy = "user",
@@ -83,6 +83,17 @@ public class User {
     )
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
+
+    // @OneToMany(mappedBy = "user",
+    //         cascade = CascadeType.ALL)
+    // @Builder.Default
+    // private List<Order> orders = new ArrayList<>();
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void onCreate() {

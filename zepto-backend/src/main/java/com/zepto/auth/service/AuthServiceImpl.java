@@ -23,7 +23,6 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    
     @Override
     public AuthResponse register(RegisterRequest request) {
 
@@ -33,16 +32,16 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.ROLE_USER)
-                .role(UserRole.ROLE_ADMIN)
+                .role(UserRole.USER)
+                // .role(UserRole.ADMIN)
                 .enabled(true)
                 .build();
 
-        if(userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException(
                     "User already exists with email: " + request.getEmail());
         }
-        
+
         userRepository.save(user);
 
         String token = jwtService.generateToken(
@@ -50,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
                         .builder()
                         .username(user.getEmail())
                         .password(user.getPassword())
-                        .roles(user.getRole().name().replace("ROLE_", ""))
+                        .roles(user.getRole().name())
                         .build());
 
         return new AuthResponse(token);
@@ -61,18 +60,13 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new InvalidCredentialsException(
-                                "Invalid email or password"));
+                .orElseThrow(()
+                        -> new InvalidCredentialsException(
+                        "Invalid email or password"));
 
         boolean matches = passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword());
-
-        if (!matches) {
-            throw new InvalidCredentialsException(
-                    "Invalid email or password");
-        }
 
         if (!matches) {
             throw new InvalidCredentialsException(
@@ -84,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
                         .builder()
                         .username(user.getEmail())
                         .password(user.getPassword())
-                        .roles(user.getRole().name().replace("ROLE_", ""))
+                        .roles(user.getRole().name())
                         .build());
 
         return new AuthResponse(token);
