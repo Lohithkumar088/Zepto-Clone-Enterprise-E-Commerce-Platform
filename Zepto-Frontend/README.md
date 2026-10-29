@@ -1,16 +1,20 @@
-# React + Vite
+# Zepto storefront
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Responsive React storefront inspired by the supplied Zepto reference screens. It includes department browsing, product search, product quick view, a persistent local cart, location selection, login/register, and responsive storefront sections.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Start the Spring Boot backend on `http://localhost:8080`.
+2. From this directory, run `npm install` once and then `npm run dev`.
+3. Open the local URL printed by Vite.
 
-## React Compiler
+The Vite development server proxies `/api` to the backend. To use a different API base, define `VITE_API_BASE_URL` (for example `https://api.example.com/api/v1`).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The frontend uses the backend authentication and catalog endpoints when available. It falls back to a bundled demo catalog when the backend has no data or is unavailable. Cart persistence is currently browser-local because the backend does not expose cart or order endpoints yet; checkout is therefore a UI placeholder.
 
-## Expanding the ESLint configuration
+## Commands
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `npm run dev` — start the local development server.
+- `npm run build` — create the production bundle in `dist/`.
+- `npm run lint` — run ESLint.
+- `npm run preview` — serve the built bundle locally.
